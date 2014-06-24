@@ -1,0 +1,48 @@
+/********globle define*************/
+body {font-size: 14px;font-family: 宋体, Arial, sans-serif;}
+a{ color:Black; text-decoration:none;}
+a:hover{  text-decoration:none;}
+h3{	font-size:20px;	font-weight:bold;	margin:12px 0;}
+h4{	font-size:16px;	font-weight:bold;	color:#CC0000;	margin:10px 0;}
+h5{	font-size:14px;	font-weight:bold;	color:#990000;	margin:5px 0;}
+textarea{font-size:14px;}
+.footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
+
+/****menu*****/
+#menuAccordion ul{list-style-type:none;margin:0px; padding:10px;}
+#menuAccordion ul li{ padding:0px;}
+#menuAccordion ul li a{line-height:24px;text-decoration: none;}
+#menuAccordion ul li div{margin:2px 0px;padding-left:10px;padding-top:2px;border: 1px dashed #fff;}
+#menuAccordion ul li div.hover{border:1px dashed #99BBE8; background:#E0ECFF;cursor:pointer;}
+#menuAccordion ul li div.hover a{color:#416AA3;}
+#menuAccordion ul li div.selected{border:1px solid #99BBE8; background:#E0ECFF;cursor:default;}
+#menuAccordion ul li div.selected a{color:#416AA3; font-weight:bold;}
+
+/*****cust-icon*************/
+.icon{padding:2px 9px; background:url(../images/tabicons.png) no-repeat; }
+.icon-sys{ background:url(../images/directory.png) no-repeat -0px 0px; padding-left: 20px;}
+.icon-nav{ background:url(../images/tabicons.png) no-repeat -100px -18px; padding-left: 20px;}
+.icon-report{background:url(../images/report.png) no-repeat 0px -4px;padding-left: 20px;}
+.icon-oper{background:url(../images/oper.png) no-repeat 0px -3px;padding-left: 20px;}
+
+.icon-users{background:url('../images/tabicons.png') no-repeat -359px -198px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-project{background:url('../images/tabicons.png') no-repeat -299px -159px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon_folder{background:url('../images/tabicons.png') no-repeat -260px -498px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-edit-file{background:url('../images/tabicons.png') no-repeat -100px -298px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-back{background:url('../images/tabicons.png') no-repeat -360px -99px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-up{background:url('../images/tabicons.png') no-repeat -240px -0px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-new-file{background:url('../images/tabicons.png') no-repeat -99px -0px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-del-file{background:url('../images/tabicons.png') no-repeat -139px -0px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-pen{background:url('../images/tabicons.png') no-repeat -18px -459px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-preview{background:url('../images/tabicons.png') no-repeat -60px -259px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-clean{background:url('../images/tabicons.png') no-repeat -198px -119px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+.icon-del{background:url('../images/tabicons.png') no-repeat -139px -119px;width:18px;height:18px;line-height:18px;display:inline-block;*display:inline;*zoom:1}
+/******cust style define***********/
+.doc-table{	border-collapse:collapse;border-spacing:0;width:100%;}
+.doc-table th,.doc-table td{border:1px solid #8CACBB;padding:0.3em 0.7em;}
+.doc-table th{background:#eee;}
+.doc-table pre{font-family:Verdana;font-size:12px;color:#006600;background:#fafafa;	padding:5px;}
+.input{border:1 solid #999999;height:20px;}
+.td_font{ width:120px; text-align:right;word-break:keep-all}
+.ftitle {font-size: 14px;font-weight: bold;padding: 5px 0;margin-bottom: 10px;border-bottom: 1px solid #ccc;}
+.fitem {margin-bottom: 5px;}
