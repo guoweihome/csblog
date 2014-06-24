@@ -47,8 +47,6 @@
 		<property name="freemarkerVariables">
 		    <map>
 				<entry key="app_type" value-ref="appTypeDirective"></entry>		        
-				<entry key="change_log" value-ref="changeLogDirective"></entry>
-				<entry key="faq" value-ref="faqDirective"></entry>
 				<entry key="sql" value-ref="sqlDirective"></entry>
 		    </map>
 		</property>
