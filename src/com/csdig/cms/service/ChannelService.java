@@ -1,20 +1,25 @@
 package com.csdig.cms.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.csdig.cms.model.CmsChannel;
+import com.csdig.cms.model.Channel;
 
 public interface ChannelService {
-	public CmsChannel getById(int id) throws Exception;
-
-	public List<CmsChannel> listAll() throws Exception;
-
-	public void add(CmsChannel channel) throws Exception;
-
-	public void update(CmsChannel channel) throws Exception;
 	
+	public Channel getById(int id) throws Exception;
+
+	public List<Channel> listAll(Integer pid) throws Exception;
+
+	public void add(Channel channel) throws Exception;
+
+	public void update(Channel channel) throws Exception;
+
 	public void delete(int id) throws Exception;
 
 	public void cleanDirtyData() throws Exception;
-	
+
+	// /////////
+	public List<Map<String, Object>> listChanelTreeByPid(Integer id) throws Exception;
+
 }

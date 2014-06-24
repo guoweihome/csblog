@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.csdig.cms.common.ConstantDefine;
 import com.csdig.cms.common.RealPathResolver;
+import com.csdig.cms.model.Channel;
 import com.csdig.cms.model.CmsChannel;
 import com.csdig.cms.model.CmsChannelAttr;
 import com.csdig.cms.model.CmsModelItem;
@@ -44,8 +45,8 @@ public class ChannelAttrController {
 	public ModelAndView list(int channelId) throws Exception {
 		ModelAndView modelAndView = new ModelAndView("channelAttr/list");
 		modelAndView.addObject("channelId", channelId);
-		CmsChannel channel = channelService.getById(channelId);
-		modelAndView.addObject("channelName", channel.getName());
+		Channel channel = channelService.getById(channelId);
+		modelAndView.addObject("channelName", channel.getChannelName());
 		return modelAndView;
 	}
 
@@ -60,28 +61,29 @@ public class ChannelAttrController {
 	}
 
 	@RequestMapping(value = "add")
-	public ModelAndView add(int channelId) throws Exception {
-		ModelAndView modelAndView = new ModelAndView("channelAttr/add");
-		CmsChannel channel = channelService.getById(channelId);
-		List<CmsModelItem> modelItemList = modelService.findModelItemByModelId(channel.getModelId());
-
-		Map<String, CmsModelItem> modelItemMap = new HashMap<String, CmsModelItem>();
-		for (CmsModelItem modelItem : modelItemList) {
-			modelItemMap.put(modelItem.getField(), modelItem);
-		}
-
-		List<CmsChannelAttr> channelAttrList = channel.getChannelAttrs();
-		for (CmsChannelAttr attr : channelAttrList) {
-			CmsModelItem modelItem = modelItemMap.get(attr.getAttrName());
-			if (modelItem.getIsRequired() && !modelItem.getIsSingle()) {
-				continue;
-			}
-			modelItemList.remove(modelItem);
-		}
-
-		modelAndView.addObject("channelId", channelId);
-		modelAndView.addObject("modelItemList", modelItemList);
-		return modelAndView;
+	public String add(int channelId) throws Exception {
+//		ModelAndView modelAndView = new ModelAndView("channelAttr/add");
+//		Channel channel = channelService.getById(channelId);
+//		List<CmsModelItem> modelItemList = modelService.findModelItemByModelId(channel.getModelId());
+//
+//		Map<String, CmsModelItem> modelItemMap = new HashMap<String, CmsModelItem>();
+//		for (CmsModelItem modelItem : modelItemList) {
+//			modelItemMap.put(modelItem.getField(), modelItem);
+//		}
+//
+//		List<CmsChannelAttr> channelAttrList = channel.getChannelAttrs();
+//		for (CmsChannelAttr attr : channelAttrList) {
+//			CmsModelItem modelItem = modelItemMap.get(attr.getAttrName());
+//			if (modelItem.getIsRequired() && !modelItem.getIsSingle()) {
+//				continue;
+//			}
+//			modelItemList.remove(modelItem);
+//		}
+//
+//		modelAndView.addObject("channelId", channelId);
+//		modelAndView.addObject("modelItemList", modelItemList);
+//		return modelAndView;
+		return "add";
 	}
 
 	@RequestMapping(value = "save")

@@ -1,122 +1,105 @@
 package com.csdig.cms.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.csdig.cms.dao.CmsChannelAttrDAO;
-import com.csdig.cms.dao.CmsChannelDAO;
-import com.csdig.cms.dao.CmsModelDAO;
-import com.csdig.cms.dao.CmsModelItemDAO;
-import com.csdig.cms.model.CmsChannel;
-import com.csdig.cms.model.CmsChannelAttr;
-import com.csdig.cms.model.CmsModel;
-import com.csdig.cms.model.CmsModelItem;
+import com.csdig.cms.dao.ChannelAttrDAO;
+import com.csdig.cms.dao.ChannelDAO;
+import com.csdig.cms.exception.BusinessException;
+import com.csdig.cms.model.Channel;
 import com.csdig.cms.service.ChannelService;
 
 @Service
 @Transactional
-public class ChannelServiceImpl implements ChannelService{
+public class ChannelServiceImpl implements ChannelService {
+
+	@Autowired
+	private ChannelDAO channelDao;
 	
 	@Autowired
-	private CmsChannelDAO channelDao;
-	
-	@Autowired
-	private CmsModelDAO modelDao;
-	
-	@Autowired
-	private CmsChannelAttrDAO channelAttrDao;
-	
-	@Autowired
-	private CmsModelItemDAO modelItemDao;
-	
+	private ChannelAttrDAO channelAttrDao;
 	
 	@Override
-	public CmsChannel getById(int id) throws Exception {
-		List<CmsChannelAttr> channelAttrs = channelAttrDao.getByChannelId(id);
-		CmsChannel channel = channelDao.findById(id);
-		channel.setChannelAttrs(channelAttrs);
-		return channel;
+	public Channel getById(int id) throws Exception {
+		return channelDao.findById(id);
 	}
 
 	@Override
-	public List<CmsChannel> listAll() throws Exception {
-		List<CmsChannel> channelList = channelDao.listAll();
-		List<CmsModel> modelList = modelDao.listAll();
-		
-		Map<Integer,String> modelNameMap = new HashMap<Integer,String>();
-		for (CmsModel model : modelList) {
-			Integer modelId = model.getModelId();
-			if (!modelNameMap.containsKey(modelId)) {
-				modelNameMap.put(modelId, model.getModelName());
-			}
-		}
-		
-		Map<Integer,CmsChannel> channelMap = new HashMap<Integer,CmsChannel>();
-		for(CmsChannel channel:channelList){
-			channelMap.put(channel.getChannelId(), channel);
-		}
-		
-		for(CmsChannel channel:channelList){
-			Integer parentId = channel.getParentId();
-			channel.setModelName(modelNameMap.get(channel.getModelId()));
-			String parentName = "无";
-			if (parentId != null) {
-				CmsChannel parent = channelMap.get(parentId);
-				if (parent != null) {
-					parentName = parent.getName();
-				}
-			}
-			channel.setParentName(parentName);
-			
-		}
-		
- 		return channelList;
+	public List<Channel> listAll(Integer pid) throws Exception {
+		return channelDao.findByPId(pid);
 	}
 
 	@Override
-	public void add(CmsChannel channel) throws Exception{
-		int channelId = channelDao.add(channel);
-		List<CmsModelItem> modelItemList = modelItemDao.findByModelId(channel.getModelId());
-		for (CmsModelItem modelItem : modelItemList) {
-			if (!modelItem.getIsRequired()) {
-				continue;
-			}
-			CmsChannelAttr attr = new CmsChannelAttr();
-			attr.setChannelId(channelId);
-			attr.setPriority(0);
-			attr.setAttrName(modelItem.getField());
-			attr.setAttrValue("");
-			channelAttrDao.add(attr);
+	public void add(Channel channel) throws Exception {
+		List<Channel> list = channelDao.findByCondition(new String[] { "channel_path", "parent_id" }, new Object[] {
+				channel.getChannelPath(), channel.getParentId() });
+		if (list != null && list.size() > 0) {
+			throw new BusinessException("", "栏目路径已存在");
 		}
-			
+		channelDao.add(channel);
 	}
 
 	@Override
-	public void update(CmsChannel channel) throws Exception {
+	public void update(Channel channel) throws Exception {
 		channelDao.update(channel);
 	}
 
 	@Override
 	public void delete(int id) throws Exception {
-		
+		List<Channel> list = channelDao.findByPId(id);
+		if(list!=null && list.size()>0){
+			throw new BusinessException("", "栏目存在子栏目，不能删除");
+		}
 		channelAttrDao.deleteByChannelId(id);
-		
-		CmsChannel channel = new CmsChannel();
-		channel.setChannelId(id);
-		channelDao.delete(channel);
-		
-		
+		channelDao.delete(id);
 	}
-	
+
 	@Override
-	public void cleanDirtyData()throws Exception{
-		channelAttrDao.cleanDirtyData();
+	public void cleanDirtyData() throws Exception {
+		
 	}
-	
+
+	@Override
+	public List<Map<String, Object>> listChanelTreeByPid(Integer id) throws Exception {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		if (id == null) {
+			Map<String, Object> root = new HashMap<String, Object>();
+			root.put("id", "-1");
+			root.put("text", "根节点");
+			root.put("iconCls", "icon_folder");
+			root.put("state", "closed");
+			result.add(root);
+			return result;
+		}
+
+		List<Channel> list = channelDao.findByPId(id);
+		if (list != null) {
+			for (Channel channel : list) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				PropertyUtils.copyProperties(map, channel);
+				map.put("id", channel.getChannelId());
+				map.put("text", channel.getChannelName());
+
+				List<Channel> child = channelDao.findByPId(channel.getChannelId());
+				if (channel != null && child.size() > 0) {
+					map.put("iconCls", "icon_folder");
+					map.put("state", "closed");
+				} else {
+					map.put("iconCls", "icon-edit-file");
+					map.put("state", "open");
+				}
+				result.add(map);
+			}
+		}
+
+		return result;
+	}
 
 }
