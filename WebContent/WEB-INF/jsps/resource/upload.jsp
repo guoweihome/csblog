@@ -11,7 +11,7 @@ $('#file_upload').uploadify({
 	'uploader' : '${admin_base}/resource/upload.at',
 	'buttonText' : '浏    览...',
 	'button_image_url' : '${base}/res/uploadify/browse-btn.png',
-	'fileTypeExts' : '*.gif; *.jpg; *.png; *.css; *.js;',
+	'fileTypeExts' : '*.gif; *.jpg; *.png; *.css; *.js; *.ftl;',
 	'method'   : 'post',
 	'formData' : {
 		'id':'${param.id}',
