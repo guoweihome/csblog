@@ -8,14 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.csdig.cms.dao.CmsAppChangeLogDAO;
-import com.csdig.cms.dao.CmsAppChangeLogItemDAO;
 import com.csdig.cms.dao.CmsChannelAttrDAO;
 import com.csdig.cms.dao.CmsChannelDAO;
-import com.csdig.cms.dao.CmsFaqDAO;
 import com.csdig.cms.dao.CmsModelDAO;
 import com.csdig.cms.dao.CmsModelItemDAO;
-import com.csdig.cms.model.CmsAppChangeLog;
 import com.csdig.cms.model.CmsChannel;
 import com.csdig.cms.model.CmsChannelAttr;
 import com.csdig.cms.model.CmsModel;
@@ -37,15 +33,6 @@ public class ChannelServiceImpl implements ChannelService{
 	
 	@Autowired
 	private CmsModelItemDAO modelItemDao;
-	
-	@Autowired
-	private CmsFaqDAO faqDao;
-	
-	@Autowired
-	private CmsAppChangeLogDAO logDao;
-	
-	@Autowired
-	private CmsAppChangeLogItemDAO logItemDao;
 	
 	
 	@Override
@@ -116,14 +103,6 @@ public class ChannelServiceImpl implements ChannelService{
 
 	@Override
 	public void delete(int id) throws Exception {
-	
-		faqDao.deleteByChannelId(id);
-		
-		List<CmsAppChangeLog> logList = logDao.getByChannelId(id);
-		for (CmsAppChangeLog log : logList) {
-			logItemDao.deleteByLogId(log.getChangeLogId());
-		}
-		logDao.deleteByChannelId(id);
 		
 		channelAttrDao.deleteByChannelId(id);
 		

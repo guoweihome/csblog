@@ -13,6 +13,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -41,25 +42,32 @@ public class ResourceController {
 	private CmsResourceMng resourceMng;
 
 	@RequestMapping(value = "/{name}View")
-	public String list(@PathVariable String name) throws Exception {
+	public String list(HttpServletRequest request, @PathVariable String name,
+			String type) throws Exception {
+		request.setAttribute("type", type);
 		return "resource/" + name;
 	}
 
 	// 树
 	@RequestMapping(value = "tree")
 	@ResponseBody
-	public String tree(String id) throws Exception {
-		if (id == null) {
-			id = ConstantDefine.ROOT_RES_DIR;
+	public String tree(String type, String id) throws Exception {
+		if (StringUtils.isEmpty(id)) {
+			if (StringUtils.equals(type, ConstantDefine.ResType.RESOURCE)) {
+				id = ConstantDefine.ROOT_RES_DIR;
+			}
+			if (StringUtils.equals(type, ConstantDefine.ResType.TEMPLATE)) {
+				id = ConstantDefine.TPL_BASE;
+			}
 		}
 		List<FileWrap> list = resourceMng.listFile(id, true);
-
 		return JSONArray.fromObject(list, dateJsonConfig()).toString();
 	}
 
 	// 修改界面
 	@RequestMapping(value = "editView")
-	public String editView(HttpServletRequest request, String id) throws Exception {
+	public String editView(HttpServletRequest request, String id)
+			throws Exception {
 		String content = resourceMng.readFile(id);
 		request.setAttribute("content", content);
 		request.setAttribute("file", resourceMng.getFile(id));
@@ -69,7 +77,8 @@ public class ResourceController {
 	// 列表
 	@RequestMapping(value = "fileList")
 	@ResponseBody
-	public String fileList(HttpServletRequest request, String id) throws Exception {
+	public String fileList(HttpServletRequest request, String id, String type)
+			throws Exception {
 		List<FileWrap> list = resourceMng.listFile(id, false);
 		request.setAttribute("list", list);
 		return JSONArray.fromObject(list, dateJsonConfig()).toString();
@@ -78,7 +87,8 @@ public class ResourceController {
 	// 修改文件
 	@RequestMapping(value = "write")
 	@ResponseBody
-	public Map<String, Object> write(String id, String content) throws Exception {
+	public Map<String, Object> write(String id, String content)
+			throws Exception {
 		FileUtils.write(resourceMng.getFile(id).getFile(), content, "utf-8");
 		Map<String, Object> result = new HashMap<String, Object>();
 		return result;
@@ -87,7 +97,8 @@ public class ResourceController {
 	// 新建文件夹
 	@RequestMapping(value = "createDir")
 	@ResponseBody
-	public Map<String, Object> createDir(String path, String dirName) throws Exception {
+	public Map<String, Object> createDir(String path, String dirName)
+			throws Exception {
 		resourceMng.createDir(path, dirName);
 		Map<String, Object> result = new HashMap<String, Object>();
 		return result;
@@ -105,7 +116,8 @@ public class ResourceController {
 	// 重命名
 	@RequestMapping(value = "rename")
 	@ResponseBody
-	public Map<String, Object> rename(String origName, String destName) throws Exception {
+	public Map<String, Object> rename(String origName, String destName)
+			throws Exception {
 		resourceMng.rename(origName, destName);
 		Map<String, Object> result = new HashMap<String, Object>();
 		return result;
@@ -119,7 +131,8 @@ public class ResourceController {
 		String id = multipartRequest.getParameter("id");
 		// 获取前台传值
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-		String ctxPath = request.getSession().getServletContext().getRealPath(id);
+		String ctxPath = request.getSession().getServletContext()
+				.getRealPath(id);
 		String fileName = null;
 		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 			MultipartFile mf = entity.getValue();
@@ -134,7 +147,8 @@ public class ResourceController {
 
 	private JsonConfig dateJsonConfig() {
 		JsonConfig config = new JsonConfig();
-		config.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor("yyyy-MM-dd HH:mm:ss"));
+		config.registerJsonValueProcessor(Date.class,
+				new JsonDateValueProcessor("yyyy-MM-dd HH:mm:ss"));
 		return config;
 	}
 }

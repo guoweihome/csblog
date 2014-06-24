@@ -97,9 +97,4 @@ public class CmsChannelDAOImpl implements CmsChannelDAO {
 		return DBUtils.queryBeanList(sql, CmsChannel.class);
 	}
 
-	@Override
-	public List<CmsChannel> listAllFromCache() throws Exception {
-		return listAll();
-	}
-
 }

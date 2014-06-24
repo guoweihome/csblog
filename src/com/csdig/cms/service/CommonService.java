@@ -20,7 +20,5 @@ public interface CommonService {
 			String orderBy) throws Exception;
 
 	
-	public String getPromotionAppName(String appId,String refer)throws Exception;
-	
 	
 }

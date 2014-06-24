@@ -23,9 +23,6 @@ public interface CmsChannelDAO {
 
     public List<CmsChannel> listAll() throws Exception;
     
-    @Cacheable(value="com.sohu.auto.cms.dao.CmsChannelDAO.listAllFromCache")
-    public List<CmsChannel> listAllFromCache() throws Exception;
-
     public Pagination<CmsChannel> findByCondition(CmsChannel vo, int pageNo, int pageSize)throws Exception;
     
     public List<CmsChannel> findByCondition(CmsChannel bean)throws Exception;

@@ -16,7 +16,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -28,11 +27,9 @@ import com.csdig.cms.common.RealPathResolver;
 import com.csdig.cms.dao.CmsChannelAttrDAO;
 import com.csdig.cms.dao.CmsChannelDAO;
 import com.csdig.cms.dao.CmsModelTplDAO;
-import com.csdig.cms.dao.MobileAppPromotionRefererDAO;
 import com.csdig.cms.model.CmsChannel;
 import com.csdig.cms.model.CmsChannelAttr;
 import com.csdig.cms.model.CmsModelTpl;
-import com.csdig.cms.model.MobileAppPromotionReferer;
 import com.csdig.cms.service.FrontPageService;
 
 import freemarker.template.Template;
@@ -59,9 +56,6 @@ public class FrontPageServiceImpl implements FrontPageService {
 
 	@Resource(name = "freemarkerConfig")
 	private FreeMarkerConfigurer conf;
-
-	@Autowired
-	private MobileAppPromotionRefererDAO appPromotionReferDao;
 
 	@Override
 	public String findTemplateByChanelPath(String channelPath) throws Exception {
@@ -228,36 +222,6 @@ public class FrontPageServiceImpl implements FrontPageService {
 		}
 
 	}
-
-	@Override
-	public void setRefer2session(HttpServletRequest request) {
-		String refer = request.getHeader("Referer");
-		if (StringUtils.isNotEmpty(refer)) {
-			try {
-				List<MobileAppPromotionReferer> list = appPromotionReferDao.getAppPromotionConfigInfoByRefer(refer);
-				if (list != null && list.size() > 0) {
-					MobileAppPromotionReferer appPromotionRefer = list.get(0);
-					String appRefer = appPromotionRefer.getReferer();
-					if (refer.equals(appRefer)) {
-						request.getSession().setAttribute(ConstantDefine.SessionAttr.REFER, refer);
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-
-	}
-
-	@Override
-	public List<CmsChannel> getChannelList() {
-		try {
-			return channelDao.listAllFromCache();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 }

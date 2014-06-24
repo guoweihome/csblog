@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
-import com.csdig.cms.service.FrontPageService;
-import com.csdig.cms.utils.BeanFactory;
-
 import freemarker.template.Template;
 
 public class RichFreeMarkerView extends FreeMarkerView {
@@ -28,12 +25,12 @@ public class RichFreeMarkerView extends FreeMarkerView {
 
 	@Override
 	protected Template getTemplate(String name, Locale locale) throws IOException {
-		FrontPageService frontSv = BeanFactory.getBeanByType(FrontPageService.class);
-		try {
-			frontSv.generateTplFile(name.substring(0, name.lastIndexOf(".")));
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
+//		FrontPageService frontSv = BeanFactory.getBeanByType(FrontPageService.class);
+//		try {
+//			frontSv.generateTplFile(name.substring(0, name.lastIndexOf(".")));
+//		} catch (Exception e) {
+//			throw new IOException(e);
+//		}
 		return super.getTemplate(name, locale);
 	}
 
