@@ -46,6 +46,10 @@ public class Channel implements java.io.Serializable{
      * isSingle       db_column: is_single 
      */     
     private java.lang.Boolean isSingle;
+    /**
+     * isSingle       db_column: content_path 
+     */     
+    private java.lang.String contentPath;
     //columns END
     
     private List<ChannelAttr> attrs = new ArrayList<ChannelAttr>();
@@ -135,6 +139,17 @@ public class Channel implements java.io.Serializable{
 	public void setAttrs(List<ChannelAttr> attrs) {
 		this.attrs = attrs;
 	}
+
+
+	public java.lang.String getContentPath() {
+		return contentPath;
+	}
+
+
+	public void setContentPath(java.lang.String contentPath) {
+		this.contentPath = contentPath;
+	}
+	
     
 }
 
