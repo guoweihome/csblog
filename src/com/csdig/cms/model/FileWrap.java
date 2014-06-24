@@ -15,7 +15,7 @@ public class FileWrap {
 	/**
 	 * 可编辑的后缀名
 	 */
-	public static final String[] EDITABLE_EXT = new String[] { "html", "htm", "css", "js", "txt" };
+	public static final String[] EDITABLE_EXT = new String[] { "html", "htm", "css", "js", "txt","ftl"  };
 	private File file;
 	private String rootPath;
 //	private FileFilter filter;
