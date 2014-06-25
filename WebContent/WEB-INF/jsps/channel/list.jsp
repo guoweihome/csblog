@@ -31,16 +31,16 @@
 			$("#dataList").datagrid({
 				url:"${admin_base}/channel/getChannels.at?pid="+pid,
 				singleSelect:true,
-				rownumbers: true,
 				fitColumns:true,
 				nowrap:false,
 				idField:'channelId',
 				columns:[[
-					{field:'channelId',checkbox:true},
+					{field:'channelId',title:'栏目编号',width:50,align:"center"},
 					{field:'channelName',title:'栏目名称',width:50,align:"center"},
 					{field:'channelPath',title:'栏目路径',width:50,align:"center"},
 					{field:'priority',title:'栏目顺序',width:20,align:"center"},
-					{field:'tplPath',title:'模板路径',width:180,align:"center"},
+					{field:'tplPath',title:'模板路径',width:150,align:"center"},
+					{field:'contentPath',title:'内容模板路径',width:150,align:"center"},
 					{field:'isDisplay',title:'是否显示',width:30,align:"center",
 						formatter:function(value,row,index){
 							if(value) return "显示";
@@ -226,8 +226,8 @@
 	        	if(alertEmptyRec(row)){
 		        	$("#dlg").dialog({
 						title:"编辑栏目",
-						width:500,
-						height:300,
+						width:600,
+						height:400,
 						modal : true,
 						closable : true,
 						href:"${admin_base}/channel/update.at?channelId="+row.channelId,
@@ -299,7 +299,7 @@
 	</script>
 	</head>
 	<body class="easyui-layout">
-<div region="west" border="true" title="栏目树" collapsible="false" style="width:250px;">
+<div region="west" border="true" title="栏目树" collapsible="false" style="width:210px;">
 <div class="easyui-panel" style="padding:5px;">
 <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" id="refrsh_btn" style="width:80px">刷新</a>
 </div>

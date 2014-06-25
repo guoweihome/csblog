@@ -28,7 +28,15 @@
 			<td>模板路径:</td>
 			<td>
 				<input class="easyui-validatebox textbox" style="width: 220px" id="tplPath" type="text" name="tplPath" value="${channel.tplPath }" data-options="required:true"></input>
-				<input type="button" value="选择" onclick="selectTpl()"/>
+				<input type="button" value="选择" onclick="selectTpl('tplPath')"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>内容模板路径:</td>
+			<td>
+				<input class="easyui-validatebox textbox" style="width: 220px" id="contentPath" type="text" name="contentPath" value="${channel.contentPath }" data-options="required:true"></input>
+				<input type="button" value="选择" onclick="selectTpl('contentPath')"/>
 			</td>
 		</tr>
 		
@@ -75,30 +83,34 @@
 <div id="selectTpl2">
 </div>
 <script type="text/javascript">
-function selectTpl(){
+function selectTpl(srcId){
 	$("#selectTpl2").html("<ul id=\"t3\" class=\"easyui-tree\" url=\"tree.at?type=tpl\" style='height:300px'>");
-	$("#selectTpl2").dialog({
-		title:"新增栏目",
-		width:300,
-		height:400,
-		modal : true,
-		closable : true,
-		buttons:[
-			{
-				text:"选择",
-				handler:function(){
-					getSelectResult();
-				}
-			}    
-		]
+	$("#t3").tree({
+		url:"${admin_base}/resource/tree.at?type=tpl",
+		onLoadSuccess:function(){
+			$("#selectTpl2").dialog({
+				title:"新增栏目",
+				width:300,
+				height:400,
+				modal : true,
+				closable : true,
+				buttons:[
+					{
+						text:"选择",
+						handler:function(){
+							getSelectResult(srcId);
+						}
+					}    
+				]
+			});
+		}
 	});
-	$("#t3").tree({url:"${admin_base}/resource/tree.at?type=tpl"});
 }
 
-function getSelectResult(){
+function getSelectResult(srcId){
 	var node = $('#t3').tree("getSelected");
 	if(node!=null){
-		$("#tplPath").val("/"+node.id);
+		$("#"+srcId).val("/"+node.id);
 	}
 	$("#selectTpl2").dialog("close");
 }
